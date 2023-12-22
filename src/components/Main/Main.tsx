@@ -200,7 +200,7 @@ const Main = () => {
         <div className='image_editor'>
             <div className="card">
                 <div className="card_header">
-                    <h2>------ Image Editor ------</h2>
+                    <h2>PHOTO EDITOR</h2>
                 </div>
                 <div className="card_body">
                     <div className="sidebar">
