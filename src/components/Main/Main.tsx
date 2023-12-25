@@ -43,9 +43,9 @@ const Main = () => {
         maxValue: number
     }
     const [details, setDetails] = useState({ naturalWidth: null as number | null, naturalHeight: null as number | null, height: null as number | null, width: null as number | null } as HTMLImageElement)
-    const [crop, setCrop] = useState({ x: null as any, y: null as any, height: null as any, width: null as any })
+    const [crop, setCrop] = useState({ x: 0 as number , y: 0 as number , height: 0 as number , width: 0 as number  })
     const [state, setState] = useState({
-        image: '',
+        image: '' as string | null,
         brightness: 100,
         grayscale: 0,
         sepia: 0,
@@ -56,9 +56,18 @@ const Main = () => {
         vartical: 1,
         horizental: 1
     })
+    interface HTMLInputEvent extends Event {
+        target: HTMLInputElement & EventTarget;
+    }
     type ObjectKey = keyof typeof state
-    const inputHandle = (e: any) => {
+    const inputHandle = (e: HTMLInputEvent) => {
+        console.log(e)
         setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
+
+        storeData.insert({
             ...state,
             [e.target.name]: e.target.value
         })
@@ -111,7 +120,9 @@ const Main = () => {
     }
     const undo = () => {
         const data = storeData.undoEdit()
+        console.log(data)
         if (data) {
+            console.log('test')
             setState(data)
         }
     }
@@ -127,7 +138,7 @@ const Main = () => {
                 })
 
                 const stateData = {
-                    image: reader.result,
+                    image: reader.result as string | null,
                     brightness: 100,
                     grayscale: 0,
                     sepia: 0,
@@ -215,13 +226,13 @@ const Main = () => {
                             </div>
                             <div className="filter_slider">
                                 <div className="label_bar">
-                                    <label htmlFor="range">Rotate</label>
-                                    <span>100%</span>
+                                    <label htmlFor="range">Intensity</label>
+                                    <span>{state[property.name as ObjectKey]} %</span>
                                 </div>
-                                <input name={property.name} onChange={inputHandle} value={state[property.name as ObjectKey]} max={property.maxValue} type="range" />
+                                <input name={property.name} onChange={inputHandle} value={state[property.name as ObjectKey]} max={property.maxValue} step={20} type="range" />
                             </div>
                             <div className="rotate">
-                                <label htmlFor="">Rotate & Filp</label>
+                                <label htmlFor="">Rotate & Flip</label>
                                 <div className="icon">
                                     <div onClick={leftRotate}><GrRotateLeft /></div>
                                     <div onClick={rightRotate}><GrRotateRight /></div>

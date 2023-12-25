@@ -1,5 +1,5 @@
-interface data {
-    image: any,
+interface data {//ArrayBuffer | string
+    image: string | null,
     brightness: number,
     grayscale: number,
     sepia: number,
@@ -30,7 +30,7 @@ class linkedList {
     }
 
     insert(data: data) {
-        let newNode = new node(data)
+        const newNode = new node(data)
         if (this.head === null) {
             this.head = newNode
             this.current = newNode
@@ -45,7 +45,7 @@ class linkedList {
         }
     }
     undoEdit = () => {
-        const preData = ( <node>this.current ).pre
+        const preData = this.current?.pre
         if (preData) {
             this.current = preData
             return preData.data
